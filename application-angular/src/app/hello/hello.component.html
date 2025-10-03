@@ -1,0 +1,21 @@
+<div class="hello-container">
+  <h1>Hello World</h1>
+
+  <div class="actions">
+    <button (click)="callApi()">Appeler l'API</button>
+    @if (authService.token()) {
+      <button class="logout-btn" (click)="logout()">Se déconnecter</button>
+    }
+  </div>
+
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  @if (data()) {
+    <div class="response">
+      <h2>Réponse de l'API:</h2>
+      <pre>{{ data() | json }}</pre>
+    </div>
+  }
+</div>

@@ -1,0 +1,83 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+.metadata
+bin/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Node & Angular (in application-angular)
+application-angular/node/
+application-angular/node_modules/
+application-angular/dist/
+application-angular/.angular/
+application-angular/npm-debug.log
+application-angular/yarn-error.log
+application-angular/.npm
+application-angular/.pnpm
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Database
+*.db
+*.sqlite
+
+# Spring Boot DevTools
+.spring-boot-devtools.properties
+
+# Static resources copied from Angular build
+application-web/src/main/resources/static/index.html
+application-web/src/main/resources/static/*.js
+application-web/src/main/resources/static/*.css
+application-web/src/main/resources/static/*.ico
+application-web/src/main/resources/static/assets/
