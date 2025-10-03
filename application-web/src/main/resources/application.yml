@@ -1,6 +1,8 @@
 spring:
   application:
     name: application-web
+  profiles:
+    active: dev
   datasource:
     url: jdbc:postgresql://localhost:5432/appdb
     username: app
@@ -16,3 +18,7 @@ server:
 logging:
   level:
     org.springframework.security: INFO
+
+# Database seeding configuration (truncate + seed)
+seeding:
+  enabled: true

@@ -1,5 +1,6 @@
 package fr.rawz06.starter.web.auth;
 
+import fr.rawz06.starter.common.service.UserService;
 import fr.rawz06.starter.web.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,18 @@ import java.util.Map;
 public class AuthController {
 
     private final JwtService jwtService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody Map<String, String> payload) {
-        // Demo: accepts any non-empty username/password
         String username = payload.getOrDefault("username", "");
         String password = payload.getOrDefault("password", "");
 
         if (username.isBlank() || password.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Bad credentials");
+        }
+
+        if (!userService.authenticate(username, password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Bad credentials");
         }
 

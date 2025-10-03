@@ -84,20 +84,22 @@
             </div>
           </ng-template>
           <div class="space-y-3 p-2">
-            <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-              <i class="pi pi-check-circle text-green-600 text-xl"></i>
+            <div class="flex items-center gap-3 p-3 rounded-lg" [ngClass]="authService.token() ? 'bg-green-50' : 'bg-red-50'">
+              <i class="text-xl" [ngClass]="authService.token() ? 'pi pi-check-circle text-green-600' : 'pi pi-times-circle text-red-600'"></i>
               <div>
                 <p class="text-xs text-gray-600">Statut</p>
-                <p class="font-semibold text-gray-800">Connecté</p>
+                <p class="font-semibold text-gray-800">{{ authService.token() ? 'Connecté' : 'Déconnecté' }}</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-              <i class="pi pi-shield text-purple-600 text-xl"></i>
-              <div>
-                <p class="text-xs text-gray-600">Token</p>
-                <p class="font-semibold text-gray-800 text-xs truncate">JWT Active</p>
+            @if (authService.token()) {
+              <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                <i class="pi pi-shield text-purple-600 text-xl"></i>
+                <div>
+                  <p class="text-xs text-gray-600">Token</p>
+                  <p class="font-semibold text-gray-800 text-xs truncate">JWT Active</p>
+                </div>
               </div>
-            </div>
+            }
           </div>
         </p-card>
 
