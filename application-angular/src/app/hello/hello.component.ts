@@ -3,11 +3,19 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-hello',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    ButtonModule,
+    MessageModule
+  ],
   templateUrl: './hello.component.html',
   styleUrl: './hello.component.css'
 })
