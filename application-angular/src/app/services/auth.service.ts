@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -11,10 +12,10 @@ export class AuthService {
 
   token = this.tokenSignal.asReadonly();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string) {
-    return this.http.post<{ token: string }>('/api/auth/login', { username, password })
+    return this.http.post<{ token: string }>('/api/public/auth/login', { username, password })
       .pipe(
         tap(res => {
           localStorage.setItem(this.tokenKey, res.token);
@@ -26,6 +27,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.tokenKey);
     this.tokenSignal.set(null);
+    this.router.navigate(['/']);
   }
 
   private getStoredToken(): string | null {

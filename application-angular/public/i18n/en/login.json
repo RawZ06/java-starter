@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome",
+  "subtitle": "Sign in to your account",
+  "username": "Username",
+  "usernamePlaceholder": "Enter your username",
+  "password": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "signIn": "Sign In",
+  "demoApp": "Demo Application",
+  "loginError": "Login failed. Please check your credentials."
+}

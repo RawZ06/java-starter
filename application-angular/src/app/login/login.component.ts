@@ -1,7 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
+import { LanguageService } from '../services/language.service';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -13,33 +15,47 @@ import { MessageModule } from 'primeng/message';
   standalone: true,
   imports: [
     FormsModule,
+    TranslateModule,
     CardModule,
     InputTextModule,
     PasswordModule,
     ButtonModule,
     MessageModule
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
   username = signal('');
   password = signal('');
   error = signal('');
+  langDropdownOpen = signal(false);
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService,
+    protected languageService: LanguageService
   ) {}
+
+  toggleLangDropdown() {
+    this.langDropdownOpen.update(v => !v);
+  }
+
+  selectLanguage(lang: string) {
+    this.languageService.setLanguage(lang);
+    this.langDropdownOpen.set(false);
+  }
 
   submit() {
     this.error.set('');
     this.authService.login(this.username(), this.password()).subscribe({
       next: () => {
-        this.router.navigate(['/hello']);
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.error.set('Login failed. Please check your credentials.');
+        this.translate.get('login.loginError').subscribe((text: string) => {
+          this.error.set(text);
+        });
         console.error('Login error:', err);
       }
     });

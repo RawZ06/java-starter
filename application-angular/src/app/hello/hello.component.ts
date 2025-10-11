@@ -16,8 +16,7 @@ import { MessageModule } from 'primeng/message';
     ButtonModule,
     MessageModule
   ],
-  templateUrl: './hello.component.html',
-  styleUrl: './hello.component.css'
+  templateUrl: './hello.component.html'
 })
 export class HelloComponent {
   data = signal<any>(null);

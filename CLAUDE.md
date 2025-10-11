@@ -279,4 +279,189 @@ cd application-angular && npm install && npm start
 cd application-web && mvn spring-boot:run
 ```
 
-Puis aller sur http://localhost:4200 et tester le login/hello !
+Puis aller sur http://localhost:4200 et tester le login/dashboard !
+
+---
+
+## 🆕 Mise à jour : Architecture Front Public / Backoffice Admin
+
+### Changements apportés
+
+Le starter a été restructuré pour séparer clairement les pages publiques et le backoffice administrateur, inspiré de laravel-boilerplate.
+
+### Backend - Nouvelle structure des controllers
+
+```
+application-web/
+└── src/main/java/fr/rawz06/starter/web/
+    ├── auth/
+    │   └── AuthController.java (POST /api/public/auth/login)
+    └── controller/
+        ├── pub/
+        │   └── PublicController.java (GET /api/public/info)
+        └── admin/
+            └── AdminDashboardController.java
+                ├── GET /api/admin/dashboard
+                └── GET /api/admin/profile
+```
+
+**Configuration de sécurité mise à jour** (`SecurityConfig.java`):
+- `/api/public/**` : Routes publiques (non protégées)
+- `/api/admin/**` : Routes administrateur (protégées par JWT)
+
+### Frontend - Nouvelle architecture
+
+#### 1. Page d'accueil publique (`/`)
+- **Composant**: `Home`
+- **Features**:
+  - Header avec logo "Java Starter Kit"
+  - Bouton "Login" en haut à droite (si non connecté)
+  - Menu dropdown utilisateur (si connecté) avec :
+    - Accéder au backoffice
+    - Paramètres du compte
+    - Se déconnecter
+  - Hero section avec titre "Java Starter Kit" et "Powered by Angular"
+
+#### 2. Layout Admin réutilisable
+- **Composant**: `Layout` (inspiré de laravel-boilerplate)
+- **Features**:
+  - Sidebar collapsible avec navigation :
+    - Dashboard
+    - Users
+    - Settings
+    - Back to site
+  - Header admin avec :
+    - Bouton toggle sidebar
+    - Menu dropdown utilisateur
+  - Zone de contenu principale avec `<router-outlet>`
+- **Style**: Sidebar gris foncé (#1f2937), design moderne et épuré
+
+#### 3. Page Dashboard (`/dashboard`)
+- **Composant**: `Dashboard`
+- **Features**:
+  - Utilise le layout admin
+  - Affiche des statistiques (Total Users, Active Users, Total Posts)
+  - Cards avec icônes colorées
+  - Appel API sécurisé vers `/api/admin/dashboard`
+  - Message de bienvenue personnalisé
+
+#### 4. Routing et Guards
+```typescript
+routes: Routes = [
+  { path: '', component: Home },                    // Public home
+  { path: 'login', component: LoginComponent },     // Public login
+  {
+    path: 'dashboard',
+    component: Layout,                              // Admin layout
+    canActivate: [authGuard],                       // Protected
+    children: [
+      { path: '', component: Dashboard }
+    ]
+  },
+  {
+    path: 'admin',
+    component: Layout,                              // Admin layout
+    canActivate: [authGuard],                       // Protected
+    children: [
+      { path: 'users', component: Dashboard },
+      { path: 'settings', component: Dashboard }
+    ]
+  }
+]
+```
+
+**Guard fonctionnel** (`authGuard`):
+- Vérifie la présence du token JWT
+- Redirige vers `/login` si non authentifié
+- Conserve l'URL de retour dans `returnUrl`
+
+### Flux utilisateur
+
+1. **Visiteur non connecté**:
+   - Arrive sur `/` → Voit la page d'accueil avec bouton "Login"
+   - Clique sur "Login" → Page de connexion
+   - Se connecte → Redirigé vers `/dashboard`
+
+2. **Utilisateur connecté**:
+   - Arrive sur `/` → Voit la page d'accueil avec menu utilisateur
+   - Menu utilisateur propose :
+     - "Accéder au backoffice" → `/dashboard`
+     - "Paramètres du compte" → `/profile`
+     - "Se déconnecter" → Déconnexion et retour à `/`
+   - Accède au dashboard → Layout admin avec sidebar
+   - Navigation dans sidebar → Users, Settings, etc.
+   - "Back to site" → Retour à `/`
+
+### Composants créés
+
+```
+src/app/
+├── home/                           # Page d'accueil publique
+│   ├── home.ts
+│   ├── home.html
+│   └── home.css
+├── shared/
+│   └── header/                     # Header public avec menu
+│       ├── header.ts
+│       ├── header.html
+│       └── header.css
+├── admin/
+│   ├── layout/                     # Layout admin réutilisable
+│   │   ├── layout.ts
+│   │   ├── layout.html
+│   │   └── layout.css
+│   └── dashboard/                  # Page dashboard
+│       ├── dashboard.ts
+│       ├── dashboard.html
+│       └── dashboard.css
+└── guards/
+    └── auth-guard.ts              # Guard fonctionnel
+```
+
+### Styles et design
+
+- **Front public**: Design moderne avec gradient violet (#667eea → #764ba2)
+- **Admin**: Sidebar gris foncé (#1f2937), fond clair (#f9fafb)
+- **Icons**: Lucide icons (SVG inline)
+- **Responsive**: Sidebar collapsible sur mobile
+- **Animations**: Transitions douces (0.2s-0.3s)
+
+### Points techniques
+
+- **Signals partout**: `sidebarOpen`, `dropdownOpen`, `stats`, `loading`
+- **Routing enfants**: Layout admin avec children routes
+- **Guard fonctionnel**: `CanActivateFn` avec inject()
+- **AuthService mis à jour**: Endpoint `/api/public/auth/login`, redirect après logout
+- **Dropdown management**: Click handlers pour ouvrir/fermer les menus
+
+### Prochaines étapes suggérées
+
+1. Créer les composants manquants :
+   - `UsersComponent` pour `/admin/users`
+   - `SettingsComponent` pour `/admin/settings`
+   - `ProfileComponent` pour `/profile`
+2. Ajouter des endpoints backend correspondants
+3. Implémenter la vraie gestion des utilisateurs (CRUD)
+4. Ajouter des breadcrumbs dans le layout admin
+5. Implémenter les filtres et la pagination
+
+### Test rapide
+
+```bash
+# 1. Démarrer PostgreSQL
+docker compose up -d
+
+# 2. Démarrer le backend
+cd application-web && mvn spring-boot:run
+
+# 3. Démarrer le frontend (dans un autre terminal)
+cd application-angular && npm start
+
+# 4. Tester
+# - Aller sur http://localhost:4200 → Page d'accueil
+# - Cliquer sur "Login"
+# - Se connecter avec n'importe quel username/password
+# - Voir le dashboard avec stats
+# - Tester la navigation dans la sidebar
+# - Tester le menu utilisateur
+```

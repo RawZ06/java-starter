@@ -1,12 +1,36 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 relative">
+  <!-- Language Selector (top right) -->
+  <div class="absolute top-6 right-6">
+    <div class="relative">
+      <button class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all cursor-pointer border border-gray-200" (click)="toggleLangDropdown()">
+        <i class="fas fa-globe text-gray-600"></i>
+        <span class="text-sm font-medium">{{ languageService.currentLang() === 'fr' ? '🇫🇷' : '🇬🇧' }}</span>
+      </button>
+
+      @if (langDropdownOpen()) {
+        <div class="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] py-2 z-[100]">
+          @for (lang of languageService.getAvailableLanguages(); track lang.code) {
+            <button
+              class="flex items-center gap-3 w-full px-4 py-2 text-left text-sm hover:bg-gray-100 transition-colors"
+              [class.bg-blue-50]="languageService.currentLang() === lang.code"
+              (click)="selectLanguage(lang.code)">
+              <span class="text-lg">{{ lang.flag }}</span>
+              <span>{{ lang.label }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
   <div class="w-full max-w-md">
     <!-- Logo/Icon section -->
     <div class="text-center mb-8">
       <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-lg">
         <i class="pi pi-user text-3xl text-white"></i>
       </div>
-      <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue</h1>
-      <p class="text-gray-600">Connectez-vous à votre compte</p>
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ 'login.welcome' | translate }}</h1>
+      <p class="text-gray-600">{{ 'login.subtitle' | translate }}</p>
     </div>
 
     <!-- Card -->
@@ -14,7 +38,7 @@
       <form (ngSubmit)="submit()" class="flex flex-col gap-6 p-2">
         <div class="flex flex-col gap-3">
           <label for="username" class="font-semibold text-gray-700 text-sm">
-            Nom d'utilisateur
+            {{ 'login.username' | translate }}
           </label>
           <input
             pInputText
@@ -23,7 +47,7 @@
             [ngModel]="username()"
             (ngModelChange)="username.set($event)"
             name="username"
-            placeholder="Entrez votre nom d'utilisateur"
+            [placeholder]="'login.usernamePlaceholder' | translate"
             class="w-full"
             required
           />
@@ -31,12 +55,12 @@
 
         <div class="flex flex-col gap-3">
           <label for="password" class="font-semibold text-gray-700 text-sm">
-            Mot de passe
+            {{ 'login.password' | translate }}
           </label>
           <p-password
             [(ngModel)]="password"
             name="password"
-            placeholder="Entrez votre mot de passe"
+            [placeholder]="'login.passwordPlaceholder' | translate"
             [toggleMask]="true"
             [feedback]="false"
             styleClass="w-full"
@@ -50,7 +74,7 @@
 
         <p-button
           type="submit"
-          label="Se connecter"
+          [label]="'login.signIn' | translate"
           icon="pi pi-sign-in"
           styleClass="w-full justify-center"
           size="large"
@@ -60,7 +84,7 @@
 
     <!-- Footer info -->
     <div class="text-center mt-6 text-sm text-gray-600">
-      <p>Application de démonstration</p>
+      <p>{{ 'login.demoApp' | translate }}</p>
     </div>
   </div>
 </div>

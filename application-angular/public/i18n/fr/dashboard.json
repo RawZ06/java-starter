@@ -1,0 +1,10 @@
+{
+  "title": "Tableau de bord",
+  "welcome": "Bienvenue sur votre tableau de bord administrateur",
+  "loading": "Chargement...",
+  "totalUsers": "Utilisateurs totaux",
+  "activeUsers": "Utilisateurs actifs",
+  "totalPosts": "Publications totales",
+  "welcomeBack": "Bienvenue {{user}} !",
+  "adminMessage": "Vous êtes connecté en tant qu'administrateur. Utilisez la barre latérale pour naviguer dans le panneau d'administration."
+}
