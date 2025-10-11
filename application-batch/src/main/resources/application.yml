@@ -2,9 +2,9 @@ spring:
   application:
     name: application-batch
   datasource:
-    url: jdbc:postgresql://localhost:5432/appdb
-    username: app
-    password: app
+    url: jdbc:postgresql://localhost:5432/starter
+    username: postgres
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update

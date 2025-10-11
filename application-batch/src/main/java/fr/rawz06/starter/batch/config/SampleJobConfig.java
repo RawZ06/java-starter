@@ -42,7 +42,7 @@ public class SampleJobConfig {
                 .build();
     }
 
-    @Scheduled(cron = "0 0/5 * * * *") // Every 5 minutes
+    @Scheduled(cron = "0 0/5 * * * *")// Every 5 minutes
     public void launchSampleJob() {
         try {
             JobParameters params = new JobParametersBuilder()
