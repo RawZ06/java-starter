@@ -1,18 +1,25 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { Home } from './home/home';
-import { Layout } from './admin/layout/layout';
-import { Dashboard } from './admin/dashboard/dashboard';
-import { Users } from './admin/users/users';
+import { LoginComponent } from './pages/public/login/login.component';
+import { Home } from './pages/public/home/home';
+import { Layout } from './pages/admin/layout/layout';
+import { Dashboard } from './pages/admin/dashboard/dashboard';
+import { Users } from './pages/admin/users/users';
+import { ProfileComponent } from './pages/profile/profile';
+import { PrivacyComponent } from './pages/legal/privacy/privacy';
+import { TermsComponent } from './pages/legal/terms/terms';
 import { authGuard } from './guards/auth-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'privacy', component: PrivacyComponent },
+  { path: 'terms', component: TermsComponent },
   {
     path: 'dashboard',
     component: Layout,
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     children: [
       { path: '', component: Dashboard }
     ]
@@ -20,10 +27,9 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: Layout,
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     children: [
-      { path: 'users', component: Users },
-      { path: 'settings', component: Dashboard } // TODO: create SettingsComponent
+      { path: 'users', component: Users }
     ]
   },
   { path: '**', redirectTo: '' }

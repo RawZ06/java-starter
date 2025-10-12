@@ -1,0 +1,50 @@
+{
+  "title": "Politique de confidentialité",
+  "lastUpdated": "Dernière mise à jour",
+  "date": "12 janvier 2025",
+  "introduction": {
+    "title": "Introduction",
+    "p1": "Bienvenue sur Java Starter Kit. Nous respectons votre vie privée et nous nous engageons à protéger vos données personnelles.",
+    "p2": "Cette politique de confidentialité vous informera sur la façon dont nous prenons soin de vos données personnelles lorsque vous visitez notre site Web et vous indiquera vos droits en matière de confidentialité."
+  },
+  "collection": {
+    "title": "Informations que nous collectons",
+    "intro": "Nous pouvons collecter, utiliser, stocker et transférer différents types de données personnelles vous concernant :",
+    "item1": "Données d'identité : nom d'utilisateur, prénom, nom de famille",
+    "item2": "Données de contact : adresse e-mail",
+    "item3": "Données techniques : adresse IP, type et version du navigateur, fuseau horaire",
+    "item4": "Données d'utilisation : informations sur la façon dont vous utilisez notre site Web et nos services"
+  },
+  "usage": {
+    "title": "Comment nous utilisons vos informations",
+    "intro": "Nous n'utiliserons vos données personnelles que lorsque la loi nous y autorise. Le plus souvent, nous utiliserons vos données personnelles dans les circonstances suivantes :",
+    "item1": "Pour vous enregistrer en tant que nouvel utilisateur",
+    "item2": "Pour gérer et protéger notre entreprise et ce site Web",
+    "item3": "Pour vous fournir du contenu et des publicités pertinents",
+    "item4": "Pour utiliser l'analyse de données afin d'améliorer notre site Web, nos produits/services, notre marketing, nos relations clients et nos expériences"
+  },
+  "security": {
+    "title": "Sécurité des données",
+    "content": "Nous avons mis en place des mesures de sécurité appropriées pour empêcher vos données personnelles d'être perdues accidentellement, utilisées ou consultées de manière non autorisée. Nous limitons l'accès à vos données personnelles aux employés, agents, sous-traitants et autres tiers qui ont un besoin professionnel de les connaître."
+  },
+  "cookies": {
+    "title": "Cookies",
+    "content": "Nous utilisons des cookies et des technologies de suivi similaires pour suivre l'activité sur notre service et stocker certaines informations. Vous pouvez demander à votre navigateur de refuser tous les cookies ou d'indiquer quand un cookie est envoyé."
+  },
+  "rights": {
+    "title": "Vos droits légaux",
+    "intro": "Dans certaines circonstances, vous disposez de droits en vertu des lois sur la protection des données concernant vos données personnelles :",
+    "item1": "Demander l'accès à vos données personnelles",
+    "item2": "Demander la correction de vos données personnelles",
+    "item3": "Demander l'effacement de vos données personnelles",
+    "item4": "Vous opposer au traitement de vos données personnelles"
+  },
+  "contact": {
+    "title": "Nous contacter",
+    "content": "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter :"
+  },
+  "changes": {
+    "title": "Modifications de cette politique de confidentialité",
+    "content": "Nous pouvons mettre à jour notre politique de confidentialité de temps à autre. Nous vous informerons de tout changement en publiant la nouvelle politique de confidentialité sur cette page et en mettant à jour la date de 'Dernière mise à jour'."
+  }
+}

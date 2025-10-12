@@ -4,7 +4,9 @@
   "loading": "Chargement...",
   "totalUsers": "Utilisateurs totaux",
   "activeUsers": "Utilisateurs actifs",
-  "totalPosts": "Publications totales",
+  "adminUsers": "Administrateurs",
+  "recentUsers": "Nouveaux utilisateurs",
+  "last30Days": "30 derniers jours",
   "welcomeBack": "Bienvenue {{user}} !",
   "adminMessage": "Vous êtes connecté en tant qu'administrateur. Utilisez la barre latérale pour naviguer dans le panneau d'administration."
 }

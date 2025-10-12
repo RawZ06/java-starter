@@ -4,7 +4,9 @@
   "loading": "Loading...",
   "totalUsers": "Total Users",
   "activeUsers": "Active Users",
-  "totalPosts": "Total Posts",
+  "adminUsers": "Administrators",
+  "recentUsers": "New Users",
+  "last30Days": "Last 30 days",
   "welcomeBack": "Welcome back, {{user}}!",
   "adminMessage": "You are logged in as an administrator. Use the sidebar to navigate through the admin panel."
 }

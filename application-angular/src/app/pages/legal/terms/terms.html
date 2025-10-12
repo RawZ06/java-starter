@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
+      <button (click)="goBack()" class="p-2 hover:bg-gray-100 rounded-md transition-colors">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h1 class="text-2xl font-bold text-gray-900">{{ 'terms.title' | translate }}</h1>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="max-w-4xl mx-auto px-6 py-8">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <!-- Last Updated -->
+      <div class="mb-6 pb-6 border-b border-gray-200">
+        <p class="text-sm text-gray-500">{{ 'terms.lastUpdated' | translate }}: {{ 'terms.date' | translate }}</p>
+      </div>
+
+      <!-- Introduction -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.introduction.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">{{ 'terms.introduction.p1' | translate }}</p>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.introduction.p2' | translate }}</p>
+      </section>
+
+      <!-- Acceptance of Terms -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.acceptance.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.acceptance.content' | translate }}</p>
+      </section>
+
+      <!-- User Accounts -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.accounts.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">{{ 'terms.accounts.intro' | translate }}</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+          <li>{{ 'terms.accounts.item1' | translate }}</li>
+          <li>{{ 'terms.accounts.item2' | translate }}</li>
+          <li>{{ 'terms.accounts.item3' | translate }}</li>
+          <li>{{ 'terms.accounts.item4' | translate }}</li>
+        </ul>
+      </section>
+
+      <!-- User Conduct -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.conduct.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">{{ 'terms.conduct.intro' | translate }}</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+          <li>{{ 'terms.conduct.item1' | translate }}</li>
+          <li>{{ 'terms.conduct.item2' | translate }}</li>
+          <li>{{ 'terms.conduct.item3' | translate }}</li>
+          <li>{{ 'terms.conduct.item4' | translate }}</li>
+          <li>{{ 'terms.conduct.item5' | translate }}</li>
+        </ul>
+      </section>
+
+      <!-- Intellectual Property -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.intellectual.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.intellectual.content' | translate }}</p>
+      </section>
+
+      <!-- Termination -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.termination.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.termination.content' | translate }}</p>
+      </section>
+
+      <!-- Disclaimer -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.disclaimer.title' | translate }}</h2>
+        <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p class="text-gray-700 leading-relaxed">{{ 'terms.disclaimer.content' | translate }}</p>
+        </div>
+      </section>
+
+      <!-- Limitation of Liability -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.liability.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.liability.content' | translate }}</p>
+      </section>
+
+      <!-- Governing Law -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.law.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.law.content' | translate }}</p>
+      </section>
+
+      <!-- Contact -->
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'terms.contact.title' | translate }}</h2>
+        <p class="text-gray-700 leading-relaxed">{{ 'terms.contact.content' | translate }}</p>
+        <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p class="text-sm text-blue-900">
+            <i class="fas fa-envelope mr-2"></i>
+            <a href="mailto:legal@example.com" class="underline hover:text-blue-700">legal@example.com</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -203,9 +203,9 @@
         © {{ currentYear }} <span class="font-semibold text-white">RawZ06</span>. {{ 'footer.copyright' | translate }}
       </div>
       <div class="flex gap-6 text-sm">
-        <a href="#" class="hover:text-white transition-colors">{{ 'footer.privacy' | translate }}</a>
-        <a href="#" class="hover:text-white transition-colors">{{ 'footer.terms' | translate }}</a>
-        <a href="https://github.com" class="hover:text-white transition-colors">
+        <a routerLink="/privacy" class="hover:text-white transition-colors">{{ 'footer.privacy' | translate }}</a>
+        <a routerLink="/terms" class="hover:text-white transition-colors">{{ 'footer.terms' | translate }}</a>
+        <a href="https://github.com" target="_blank" class="hover:text-white transition-colors">
           <i class="fab fa-github mr-1"></i>
           {{ 'footer.github' | translate }}
         </a>

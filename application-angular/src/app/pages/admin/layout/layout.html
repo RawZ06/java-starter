@@ -25,13 +25,6 @@
           <span class="text-sm">{{ 'admin.users' | translate }}</span>
         }
       </a>
-
-      <a routerLink="/admin/settings" routerLinkActive="!bg-blue-500/30 !text-white !border-l-blue-500" [class]="sidebarOpen() ? 'flex items-center gap-3 px-6 py-3 text-gray-300 hover:bg-white/10 hover:text-white transition-all border-l-3 border-transparent' : 'flex items-center justify-center px-0 py-3 text-gray-300 hover:bg-white/10 hover:text-white transition-all border-l-3 border-transparent'">
-        <i class="fas fa-cog w-5 text-center"></i>
-        @if (sidebarOpen()) {
-          <span class="text-sm">{{ 'admin.settings' | translate }}</span>
-        }
-      </a>
     </nav>
 
     <div class="py-4 border-t border-white/10">
@@ -130,9 +123,9 @@
           © {{ currentYear }} <span class="font-semibold text-gray-900">RawZ06</span>. {{ 'footer.copyright' | translate }}
         </div>
         <div class="flex gap-4">
-          <a href="#" class="hover:text-gray-900 transition-colors">{{ 'footer.privacy' | translate }}</a>
-          <a href="#" class="hover:text-gray-900 transition-colors">{{ 'footer.terms' | translate }}</a>
-          <a href="https://github.com" class="hover:text-gray-900 transition-colors">
+          <a routerLink="/privacy" class="hover:text-gray-900 transition-colors">{{ 'footer.privacy' | translate }}</a>
+          <a routerLink="/terms" class="hover:text-gray-900 transition-colors">{{ 'footer.terms' | translate }}</a>
+          <a href="https://github.com" target="_blank" class="hover:text-gray-900 transition-colors">
             <i class="fab fa-github mr-1"></i>
             {{ 'footer.github' | translate }}
           </a>

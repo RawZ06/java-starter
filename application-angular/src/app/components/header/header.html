@@ -57,10 +57,12 @@
                   </div>
                 </div>
               }
-              <a routerLink="/dashboard" class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors" (click)="dropdownOpen.set(false)">
-                <i class="fas fa-th w-[18px] text-center"></i>
-                {{ 'header.dashboard' | translate }}
-              </a>
+              @if (authService.currentUser()?.role === 'ADMIN') {
+                <a routerLink="/dashboard" class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors" (click)="dropdownOpen.set(false)">
+                  <i class="fas fa-th w-[18px] text-center"></i>
+                  {{ 'header.dashboard' | translate }}
+                </a>
+              }
               <a routerLink="/profile" class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors" (click)="dropdownOpen.set(false)">
                 <i class="fas fa-cog w-[18px] text-center"></i>
                 {{ 'header.settings' | translate }}

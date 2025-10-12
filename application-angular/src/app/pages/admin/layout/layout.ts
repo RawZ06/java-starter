@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from '../../services/auth.service';
-import { LanguageService } from '../../services/language.service';
+import { AuthService } from '../../../services/auth.service';
+import { LanguageService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-layout',
