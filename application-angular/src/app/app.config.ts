@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, APP_INITIALIZER } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors, HttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -9,6 +9,11 @@ import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { routes } from './app.routes';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { multiTranslateLoaderFactory } from './services/multi-translate-loader';
+import { AuthService } from './services/auth.service';
+
+function initializeAuth(authService: AuthService) {
+  return () => authService.loadCurrentUser();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,6 +38,12 @@ export const appConfig: ApplicationConfig = {
         useFactory: multiTranslateLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAuth,
+      deps: [AuthService],
+      multi: true
+    }
   ]
 };

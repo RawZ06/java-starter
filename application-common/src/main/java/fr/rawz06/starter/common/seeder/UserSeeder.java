@@ -30,8 +30,13 @@ public class UserSeeder implements Seeder<User> {
         User admin = new User();
         admin.setLogin("admin");
         admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setEmail("admin@example.com");
+        admin.setFirstName("Admin");
+        admin.setLastName("User");
+        admin.setRole("ADMIN");
+        admin.setActive(true);
         userRepository.save(admin);
-        log.info("     ✓ Admin user created (login: admin, password: admin)");
+        log.info("     ✓ Admin user created (login: admin, password: admin, email: admin@example.com)");
     }
 
     @Override

@@ -1,0 +1,206 @@
+<div class="max-w-full">
+  <p-toast />
+  <p-confirmDialog />
+
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ 'users.title' | translate }}</h1>
+      <p class="text-gray-600">{{ 'users.subtitle' | translate }}</p>
+    </div>
+    <p-button
+      [label]="'users.newUser' | translate"
+      icon="pi pi-plus"
+      (onClick)="openNew()"
+      severity="success"
+    />
+  </div>
+
+  <p-table
+    [value]="users()"
+    [loading]="loading()"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-striped"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'users.id' | translate }}</th>
+        <th>{{ 'users.login' | translate }}</th>
+        <th>{{ 'users.email' | translate }}</th>
+        <th>{{ 'users.firstName' | translate }}</th>
+        <th>{{ 'users.lastName' | translate }}</th>
+        <th>{{ 'users.role' | translate }}</th>
+        <th>{{ 'users.active' | translate }}</th>
+        <th>{{ 'users.actions' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.login }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>
+          <span
+            class="px-2 py-1 rounded text-xs font-semibold"
+            [class.bg-blue-100]="user.role === 'ADMIN'"
+            [class.text-blue-800]="user.role === 'ADMIN'"
+            [class.bg-gray-100]="user.role === 'USER'"
+            [class.text-gray-800]="user.role === 'USER'"
+          >
+            {{ user.role }}
+          </span>
+        </td>
+        <td>
+          <i
+            class="pi text-lg"
+            [class.pi-check-circle]="user.active"
+            [class.text-green-500]="user.active"
+            [class.pi-times-circle]="!user.active"
+            [class.text-red-500]="!user.active"
+          ></i>
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-pencil"
+              severity="info"
+              [text]="true"
+              [rounded]="true"
+              (onClick)="editUser(user)"
+              [pTooltip]="'users.edit' | translate"
+            />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              [rounded]="true"
+              (onClick)="deleteUser(user)"
+              [pTooltip]="'users.delete' | translate"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" class="text-center py-4">{{ 'users.noUsers' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Dialog for Create/Edit -->
+<p-dialog
+  [(visible)]="displayDialog"
+  [header]="isEditMode() ? ('users.editUser' | translate) : ('users.newUser' | translate)"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="flex flex-col gap-4 p-4">
+    <div class="flex flex-col gap-2">
+      <label for="login" class="font-semibold">{{ 'users.login' | translate }} *</label>
+      <input
+        pInputText
+        id="login"
+        [(ngModel)]="userForm.login"
+        [placeholder]="'users.loginPlaceholder' | translate"
+        class="w-full"
+        required
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="email" class="font-semibold">{{ 'users.email' | translate }} *</label>
+      <input
+        pInputText
+        id="email"
+        type="email"
+        [(ngModel)]="userForm.email"
+        [placeholder]="'users.emailPlaceholder' | translate"
+        class="w-full"
+        required
+      />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="firstName" class="font-semibold">{{ 'users.firstName' | translate }}</label>
+        <input
+          pInputText
+          id="firstName"
+          [(ngModel)]="userForm.firstName"
+          [placeholder]="'users.firstNamePlaceholder' | translate"
+          class="w-full"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="lastName" class="font-semibold">{{ 'users.lastName' | translate }}</label>
+        <input
+          pInputText
+          id="lastName"
+          [(ngModel)]="userForm.lastName"
+          [placeholder]="'users.lastNamePlaceholder' | translate"
+          class="w-full"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="password" class="font-semibold">
+        {{ 'users.password' | translate }}
+        {{ isEditMode() ? '(' + ('users.leaveEmptyToKeep' | translate) + ')' : '*' }}
+      </label>
+      <input
+        pInputText
+        id="password"
+        type="password"
+        [(ngModel)]="userForm.password"
+        [placeholder]="'users.passwordPlaceholder' | translate"
+        class="w-full"
+        [required]="!isEditMode()"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="role" class="font-semibold">{{ 'users.role' | translate }} *</label>
+      <p-select
+        [(ngModel)]="userForm.role"
+        [options]="roles"
+        optionLabel="label"
+        optionValue="value"
+        [placeholder]="'users.selectRole' | translate"
+        styleClass="w-full"
+      />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <p-checkbox
+        [(ngModel)]="userForm.active"
+        [binary]="true"
+        inputId="active"
+      />
+      <label for="active" class="cursor-pointer">{{ 'users.active' | translate }}</label>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      [label]="'users.cancel' | translate"
+      icon="pi pi-times"
+      (onClick)="hideDialog()"
+      severity="secondary"
+      [text]="true"
+    />
+    <p-button
+      [label]="'users.save' | translate"
+      icon="pi pi-check"
+      (onClick)="saveUser()"
+    />
+  </ng-template>
+</p-dialog>

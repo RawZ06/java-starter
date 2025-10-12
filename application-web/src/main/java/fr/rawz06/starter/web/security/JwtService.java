@@ -15,9 +15,10 @@ public class JwtService {
     // In production, load this from a configuration (application.yml)
     private final SecretKey key = Jwts.SIG.HS256.key().build();
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .subject(username)
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(Date.from(Instant.now().plus(Duration.ofHours(8))))
                 .signWith(key)
@@ -32,6 +33,19 @@ public class JwtService {
                     .parseSignedClaims(token)
                     .getPayload()
                     .getSubject();
+        } catch (JwtException e) {
+            return null;
+        }
+    }
+
+    public String extractRole(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("role", String.class);
         } catch (JwtException e) {
             return null;
         }

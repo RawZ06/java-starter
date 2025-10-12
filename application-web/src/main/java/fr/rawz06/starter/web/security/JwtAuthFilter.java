@@ -32,11 +32,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7);
             String username = jwtService.extractUsername(token);
+            String role = jwtService.extractRole(token);
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (username != null && role != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails user = User.withUsername(username)
                         .password("N/A")
-                        .roles("USER")
+                        .roles(role)
                         .build();
 
                 UsernamePasswordAuthenticationToken authToken =

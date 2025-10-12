@@ -79,11 +79,31 @@
         <div class="relative">
           <button class="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors cursor-pointer" (click)="toggleDropdown()">
             <i class="fas fa-user"></i>
+            @if (authService.currentUser()) {
+              <span class="text-sm font-medium">{{ authService.currentUser()!.login }}</span>
+            }
             <i class="fas fa-chevron-down text-xs"></i>
           </button>
 
           @if (dropdownOpen()) {
-            <div class="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[180px] py-2 z-[100]">
+            <div class="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[220px] py-2 z-[100]">
+              @if (authService.currentUser()) {
+                <div class="px-4 py-3 border-b border-gray-200">
+                  <div class="text-sm font-medium text-gray-900">{{ authService.currentUser()!.login }}</div>
+                  @if (authService.currentUser()!.email) {
+                    <div class="text-xs text-gray-500 mt-1">{{ authService.currentUser()!.email }}</div>
+                  }
+                  <div class="text-xs text-gray-400 mt-1">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                          [class.bg-purple-100]="authService.currentUser()!.role === 'ADMIN'"
+                          [class.text-purple-800]="authService.currentUser()!.role === 'ADMIN'"
+                          [class.bg-gray-100]="authService.currentUser()!.role === 'USER'"
+                          [class.text-gray-800]="authService.currentUser()!.role === 'USER'">
+                      {{ authService.currentUser()!.role }}
+                    </span>
+                  </div>
+                </div>
+              }
               <a routerLink="/profile" class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors" (click)="dropdownOpen.set(false)">
                 <i class="fas fa-user-circle w-[18px] text-center"></i>
                 {{ 'admin.profile' | translate }}

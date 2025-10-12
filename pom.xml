@@ -43,6 +43,16 @@
   <build>
     <pluginManagement>
       <plugins>
+        <!-- Maven Compiler Plugin with -parameters flag -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.11.0</version>
+          <configuration>
+            <parameters>true</parameters>
+          </configuration>
+        </plugin>
+
         <!-- Standard Spring Boot plugin -->
         <plugin>
           <groupId>org.springframework.boot</groupId>
