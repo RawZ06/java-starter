@@ -1,6 +1,6 @@
-<div class="flex h-screen overflow-hidden">
+<div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors">
   <!-- Sidebar -->
-  <aside [class]="sidebarOpen() ? 'w-64' : 'w-[70px]'" class="bg-gray-800 text-white flex flex-col transition-all duration-300 flex-shrink-0">
+  <aside [class]="sidebarOpen() ? 'w-64' : 'w-[70px]'" class="bg-gray-800 dark:bg-gray-950 text-white flex flex-col transition-all duration-300 flex-shrink-0">
     <div class="p-6 border-b border-white/10">
       <div class="text-xl font-semibold text-center">
         @if (sidebarOpen()) {
@@ -38,27 +38,50 @@
   </aside>
 
   <!-- Main Content -->
-  <div class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+  <div class="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-900">
     <!-- Top Header -->
-    <header class="h-[60px] bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
-      <button class="p-2 hover:bg-gray-100 rounded-md transition-colors" (click)="toggleSidebar()">
+    <header class="h-[60px] bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 flex-shrink-0 transition-colors">
+      <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors text-gray-700 dark:text-gray-200" (click)="toggleSidebar()">
         <i class="fas fa-bars"></i>
       </button>
 
       <div class="flex items-center gap-4">
+        <!-- Theme Selector -->
+        <div class="relative">
+          <button class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors cursor-pointer" (click)="toggleThemeDropdown()">
+            <i [class]="themeService.getThemeIcon(themeService.themeMode())" class="text-gray-700 dark:text-gray-200"></i>
+          </button>
+
+          @if (themeDropdownOpen()) {
+            <div class="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg min-w-[160px] py-2 z-[100]">
+              @for (theme of themeService.getAvailableThemes(); track theme.mode) {
+                <button
+                  class="flex items-center gap-3 w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  [class.bg-blue-50]="themeService.themeMode() === theme.mode"
+                  [class.dark:bg-blue-900]="themeService.themeMode() === theme.mode"
+                  (click)="selectTheme(theme.mode)">
+                  <i [class]="theme.icon"></i>
+                  <span>{{ theme.label | translate }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+
         <!-- Language Selector -->
         <div class="relative">
-          <button class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-md transition-colors cursor-pointer" (click)="toggleLangDropdown()">
-            <i class="fas fa-globe"></i>
-            <span class="text-sm font-medium">{{ languageService.currentLang() === 'fr' ? '🇫🇷' : '🇬🇧' }}</span>
+          <button class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors cursor-pointer" (click)="toggleLangDropdown()">
+            <i class="fas fa-globe text-gray-700 dark:text-gray-200"></i>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ languageService.currentLang() === 'fr' ? '🇫🇷' : '🇬🇧' }}</span>
           </button>
 
           @if (langDropdownOpen()) {
-            <div class="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] py-2 z-[100]">
+            <div class="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg min-w-[160px] py-2 z-[100]">
               @for (lang of languageService.getAvailableLanguages(); track lang.code) {
                 <button
-                  class="flex items-center gap-3 w-full px-4 py-2 text-left text-sm hover:bg-gray-100 transition-colors"
+                  class="flex items-center gap-3 w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   [class.bg-blue-50]="languageService.currentLang() === lang.code"
+                  [class.dark:bg-blue-900]="languageService.currentLang() === lang.code"
                   (click)="selectLanguage(lang.code)">
                   <span class="text-lg">{{ lang.flag }}</span>
                   <span>{{ lang.label }}</span>
@@ -70,38 +93,42 @@
 
         <!-- User Menu -->
         <div class="relative">
-          <button class="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors cursor-pointer" (click)="toggleDropdown()">
-            <i class="fas fa-user"></i>
+          <button class="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer" (click)="toggleDropdown()">
+            <i class="fas fa-user text-gray-700 dark:text-gray-200"></i>
             @if (authService.currentUser()) {
-              <span class="text-sm font-medium">{{ authService.currentUser()!.login }}</span>
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ authService.currentUser()!.login }}</span>
             }
-            <i class="fas fa-chevron-down text-xs"></i>
+            <i class="fas fa-chevron-down text-xs text-gray-700 dark:text-gray-200"></i>
           </button>
 
           @if (dropdownOpen()) {
-            <div class="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[220px] py-2 z-[100]">
+            <div class="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg min-w-[220px] py-2 z-[100]">
               @if (authService.currentUser()) {
-                <div class="px-4 py-3 border-b border-gray-200">
-                  <div class="text-sm font-medium text-gray-900">{{ authService.currentUser()!.login }}</div>
+                <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ authService.currentUser()!.login }}</div>
                   @if (authService.currentUser()!.email) {
-                    <div class="text-xs text-gray-500 mt-1">{{ authService.currentUser()!.email }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ authService.currentUser()!.email }}</div>
                   }
-                  <div class="text-xs text-gray-400 mt-1">
+                  <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">
                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
                           [class.bg-purple-100]="authService.currentUser()!.role === 'ADMIN'"
                           [class.text-purple-800]="authService.currentUser()!.role === 'ADMIN'"
+                          [class.dark:bg-purple-900]="authService.currentUser()!.role === 'ADMIN'"
+                          [class.dark:text-purple-200]="authService.currentUser()!.role === 'ADMIN'"
                           [class.bg-gray-100]="authService.currentUser()!.role === 'USER'"
-                          [class.text-gray-800]="authService.currentUser()!.role === 'USER'">
+                          [class.text-gray-800]="authService.currentUser()!.role === 'USER'"
+                          [class.dark:bg-gray-700]="authService.currentUser()!.role === 'USER'"
+                          [class.dark:text-gray-300]="authService.currentUser()!.role === 'USER'">
                       {{ authService.currentUser()!.role }}
                     </span>
                   </div>
                 </div>
               }
-              <a routerLink="/profile" class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors" (click)="dropdownOpen.set(false)">
+              <a routerLink="/profile" class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="dropdownOpen.set(false)">
                 <i class="fas fa-user-circle w-[18px] text-center"></i>
                 {{ 'admin.profile' | translate }}
               </a>
-              <button class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors" (click)="logout()">
+              <button class="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="logout()">
                 <i class="fas fa-sign-out-alt w-[18px] text-center"></i>
                 {{ 'admin.logout' | translate }}
               </button>
@@ -117,15 +144,15 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-4 px-6 flex-shrink-0">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-sm text-gray-600">
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 px-6 flex-shrink-0 transition-colors">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
         <div>
-          © {{ currentYear }} <span class="font-semibold text-gray-900">RawZ06</span>. {{ 'footer.copyright' | translate }}
+          © {{ currentYear }} <span class="font-semibold text-gray-900 dark:text-gray-100">RawZ06</span>. {{ 'footer.copyright' | translate }}
         </div>
         <div class="flex gap-4">
-          <a routerLink="/privacy" class="hover:text-gray-900 transition-colors">{{ 'footer.privacy' | translate }}</a>
-          <a routerLink="/terms" class="hover:text-gray-900 transition-colors">{{ 'footer.terms' | translate }}</a>
-          <a href="https://github.com" target="_blank" class="hover:text-gray-900 transition-colors">
+          <a routerLink="/privacy" class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">{{ 'footer.privacy' | translate }}</a>
+          <a routerLink="/terms" class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">{{ 'footer.terms' | translate }}</a>
+          <a href="https://github.com" target="_blank" class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
             <i class="fab fa-github mr-1"></i>
             {{ 'footer.github' | translate }}
           </a>

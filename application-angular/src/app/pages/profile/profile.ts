@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProfileService, UserProfile } from '../../services/profile.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-profile',
@@ -31,9 +32,13 @@ export class ProfileComponent implements OnInit {
   confirmPassword = signal('');
   passwordError = signal<string | null>(null);
 
+  // Theme dropdown
+  themeDropdownOpen = signal(false);
+
   constructor(
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    protected themeService: ThemeService
   ) {}
 
   ngOnInit() {
@@ -126,6 +131,15 @@ export class ProfileComponent implements OnInit {
         console.error('Error updating password:', err);
       }
     });
+  }
+
+  toggleThemeDropdown() {
+    this.themeDropdownOpen.update(v => !v);
+  }
+
+  selectTheme(mode: 'light' | 'dark' | 'system') {
+    this.themeService.setTheme(mode);
+    this.themeDropdownOpen.set(false);
   }
 
   goBack() {

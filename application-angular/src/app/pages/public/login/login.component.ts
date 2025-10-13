@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 import { LanguageService } from '../../../services/language.service';
+import { ThemeService } from '../../../services/theme.service';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -29,21 +30,32 @@ export class LoginComponent {
   password = signal('');
   error = signal('');
   langDropdownOpen = signal(false);
+  themeDropdownOpen = signal(false);
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private translate: TranslateService,
-    protected languageService: LanguageService
+    protected languageService: LanguageService,
+    protected themeService: ThemeService
   ) {}
 
   toggleLangDropdown() {
     this.langDropdownOpen.update(v => !v);
   }
 
+  toggleThemeDropdown() {
+    this.themeDropdownOpen.update(v => !v);
+  }
+
   selectLanguage(lang: string) {
     this.languageService.setLanguage(lang);
     this.langDropdownOpen.set(false);
+  }
+
+  selectTheme(mode: 'light' | 'dark' | 'system') {
+    this.themeService.setTheme(mode);
+    this.themeDropdownOpen.set(false);
   }
 
   submit() {

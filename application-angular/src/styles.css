@@ -1,5 +1,8 @@
-/* Tailwind CSS */
+/* Tailwind CSS v4 */
 @import "tailwindcss";
+
+/* Dark Mode Configuration for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* PrimeIcons */
 @import 'primeicons/primeicons.css';
