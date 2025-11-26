@@ -43,6 +43,14 @@
               <arguments>run build</arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>npm-start</id>
+            <goals><goal>npm</goal></goals>
+            <phase>none</phase>
+            <configuration>
+              <arguments>start -- --host 0.0.0.0</arguments>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>

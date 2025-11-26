@@ -26,6 +26,7 @@
     <module>application-web</module>
     <module>application-batch</module>
     <module>application-angular</module>
+    <module>application-front</module>
   </modules>
 
   <dependencyManagement>
