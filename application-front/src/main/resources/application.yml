@@ -1,6 +1,8 @@
 spring:
   application:
     name: application-front
+  profiles:
+    active: dev
   web:
     resources:
       static-locations: classpath:/static/
@@ -8,7 +10,6 @@ spring:
     throw-exception-if-no-handler-found: false
 
 server:
-  port: 80
   error:
     whitelabel:
       enabled: false

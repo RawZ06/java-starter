@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/starter
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true
+    show-sql: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    fr.rawz06.starter: DEBUG
+
+# Database seeding configuration (truncate + seed)
+seeding:
+  enabled: true

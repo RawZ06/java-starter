@@ -1,15 +1,8 @@
 spring:
   application:
     name: application-batch
-  datasource:
-    url: jdbc:postgresql://localhost:5432/starter
-    username: postgres
-    password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: update
+  profiles:
+    active: dev
   batch:
-    jdbc:
-      initialize-schema: always
     job:
       enabled: false  # Disable auto-start of jobs, use scheduler instead

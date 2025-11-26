@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/starter}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.format_sql: false
+    show-sql: false
+
+logging:
+  level:
+    org.springframework.security: INFO
+    fr.rawz06.starter: INFO
+
+# Database seeding configuration (truncate + seed)
+seeding:
+  enabled: false

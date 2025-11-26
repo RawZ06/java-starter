@@ -1,0 +1,7 @@
+server:
+  port: 4200
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    fr.rawz06.starter: DEBUG

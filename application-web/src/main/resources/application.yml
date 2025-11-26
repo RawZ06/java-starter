@@ -3,22 +3,9 @@ spring:
     name: application-web
   profiles:
     active: dev
-  datasource:
-    url: jdbc:postgresql://localhost:5432/starter
-    username: postgres
-    password: postgres
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
-      hibernate.format_sql: true
       hibernate.jdbc.time_zone: UTC
+
 server:
   port: 8080
-logging:
-  level:
-    org.springframework.security: INFO
-
-# Database seeding configuration (truncate + seed)
-seeding:
-  enabled: false
