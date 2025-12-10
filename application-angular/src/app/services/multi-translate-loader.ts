@@ -54,6 +54,7 @@ export function multiTranslateLoaderFactory(http: HttpClient): TranslateLoader {
     { prefix: '/i18n/', suffix: '{lang}/profile.json', key: 'profile' },
     { prefix: '/i18n/', suffix: '{lang}/privacy.json', key: 'privacy' },
     { prefix: '/i18n/', suffix: '{lang}/terms.json', key: 'terms' },
-    { prefix: '/i18n/', suffix: '{lang}/theme.json', key: 'theme' }
+    { prefix: '/i18n/', suffix: '{lang}/theme.json', key: 'theme' },
+    { prefix: '/i18n/', suffix: '{lang}/jobs.json', key: 'jobs' }
   ]);
 }

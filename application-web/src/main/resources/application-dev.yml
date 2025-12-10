@@ -15,6 +15,6 @@ logging:
     org.springframework.security: DEBUG
     fr.rawz06.starter: DEBUG
 
-# Database seeding configuration (truncate + seed)
+# Database seeding configuration (deprecated - use batch job instead)
 seeding:
-  enabled: true
+  enabled: false

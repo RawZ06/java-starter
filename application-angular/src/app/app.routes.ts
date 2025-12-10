@@ -4,6 +4,7 @@ import { Home } from './pages/public/home/home';
 import { Layout } from './pages/admin/layout/layout';
 import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { Users } from './pages/admin/users/users';
+import { JobsComponent } from './pages/admin/jobs/jobs';
 import { ProfileComponent } from './pages/profile/profile';
 import { PrivacyComponent } from './pages/legal/privacy/privacy';
 import { TermsComponent } from './pages/legal/terms/terms';
@@ -29,7 +30,8 @@ export const routes: Routes = [
     component: Layout,
     canActivate: [adminGuard],
     children: [
-      { path: 'users', component: Users }
+      { path: 'users', component: Users },
+      { path: 'jobs', component: JobsComponent }
     ]
   },
   { path: '**', redirectTo: '' }

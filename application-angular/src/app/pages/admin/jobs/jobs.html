@@ -1,0 +1,187 @@
+<div class="p-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ 'jobs.title' | translate }}</h1>
+    @if (selectedJob()) {
+      <button (click)="backToJobs()" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        {{ 'jobs.backToJobs' | translate }}
+      </button>
+    }
+  </div>
+
+  @if (batchService.loading()) {
+    <div class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 p-4 rounded-lg text-center">
+      {{ 'jobs.loading' | translate }}
+    </div>
+  }
+
+  @if (batchService.error()) {
+    <div class="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-4 rounded-lg text-center">
+      {{ batchService.error() }}
+    </div>
+  }
+
+  @if (!selectedJob()) {
+    <!-- Jobs Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (job of batchService.jobs(); track job.name) {
+        <div (click)="viewExecutions(job.name)" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 cursor-pointer hover:border-indigo-500 hover:shadow-lg transition-all transform hover:-translate-y-1">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ job.name }}</h3>
+            @if (job.lastExecutionStatus) {
+              <span [class]="getStatusClass(job.lastExecutionStatus)" class="px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                {{ 'jobs.' + job.lastExecutionStatus.toLowerCase() | translate }}
+              </span>
+            }
+          </div>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-600 dark:text-gray-400">{{ 'jobs.totalExecutions' | translate }}:</span>
+              <span class="font-medium text-gray-900 dark:text-white">{{ job.instanceCount }}</span>
+            </div>
+            @if (job.lastExecutionTime) {
+              <div class="flex justify-between">
+                <span class="text-gray-600 dark:text-gray-400">{{ 'jobs.lastExecution' | translate }}:</span>
+                <span class="font-medium text-gray-900 dark:text-white">{{ formatDate(job.lastExecutionTime) }}</span>
+              </div>
+            }
+            @if (job.lastExecutionTime && job.lastExecutionEndTime) {
+              <div class="flex justify-between">
+                <span class="text-gray-600 dark:text-gray-400">{{ 'jobs.duration' | translate }}:</span>
+                <span class="font-medium text-gray-900 dark:text-white">{{ getDuration(job.lastExecutionTime, job.lastExecutionEndTime) }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <!-- Executions Table -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ selectedJob() }} - {{ 'jobs.executions' | translate }}</h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 dark:bg-gray-900">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.id' | translate }}</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.status' | translate }}</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.startTime' | translate }}</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.endTime' | translate }}</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.duration' | translate }}</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.exitCode' | translate }}</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            @for (execution of batchService.executions(); track execution.id) {
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-900/50">
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">#{{ execution.id }}</td>
+                <td class="px-6 py-4">
+                  <span [class]="getStatusClass(execution.status)" class="px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                    {{ 'jobs.' + execution.status.toLowerCase() | translate }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ formatDate(execution.startTime) }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ formatDate(execution.endTime) }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ getDuration(execution.startTime, execution.endTime) }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ execution.exitCode }}</td>
+                <td class="px-6 py-4">
+                  <button (click)="viewExecutionDetails(execution.jobName, execution.id)" class="px-3 py-1 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors">
+                    {{ 'jobs.viewDetails' | translate }}
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Execution Details Modal -->
+    @if (batchService.executionDetails()) {
+      <div (click)="batchService.executionDetails.set(null)" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div (click)="$event.stopPropagation()" class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto mx-4">
+          <div class="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ 'jobs.executionDetails' | translate }} #{{ batchService.executionDetails()!.id }}</h3>
+            <button (click)="batchService.executionDetails.set(null)" class="text-gray-400 hover:text-gray-900 dark:hover:text-white text-4xl leading-none">×</button>
+          </div>
+
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+              <div>
+                <span class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">{{ 'jobs.jobName' | translate }}</span>
+                <span class="text-gray-900 dark:text-white">{{ batchService.executionDetails()!.jobName }}</span>
+              </div>
+              <div>
+                <span class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">{{ 'jobs.status' | translate }}</span>
+                <span [class]="getStatusClass(batchService.executionDetails()!.status)" class="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                  {{ 'jobs.' + batchService.executionDetails()!.status.toLowerCase() | translate }}
+                </span>
+              </div>
+              <div>
+                <span class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">{{ 'jobs.startTime' | translate }}</span>
+                <span class="text-gray-900 dark:text-white">{{ formatDate(batchService.executionDetails()!.startTime) }}</span>
+              </div>
+              <div>
+                <span class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">{{ 'jobs.endTime' | translate }}</span>
+                <span class="text-gray-900 dark:text-white">{{ formatDate(batchService.executionDetails()!.endTime) }}</span>
+              </div>
+              <div>
+                <span class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">{{ 'jobs.duration' | translate }}</span>
+                <span class="text-gray-900 dark:text-white">{{ getDuration(batchService.executionDetails()!.startTime, batchService.executionDetails()!.endTime) }}</span>
+              </div>
+              <div>
+                <span class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1">{{ 'jobs.exitCode' | translate }}</span>
+                <span class="text-gray-900 dark:text-white">{{ batchService.executionDetails()!.exitCode }}</span>
+              </div>
+            </div>
+
+            @if (batchService.executionDetails()!.exitDescription) {
+              <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg mb-6">
+                <strong class="text-gray-900 dark:text-white">{{ 'jobs.exitDescription' | translate }}:</strong>
+                <p class="text-gray-700 dark:text-gray-300 mt-2">{{ batchService.executionDetails()!.exitDescription }}</p>
+              </div>
+            }
+
+            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ 'jobs.steps' | translate }}</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 dark:bg-gray-900">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.stepName' | translate }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.status' | translate }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.read' | translate }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.write' | translate }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.commit' | translate }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.rollback' | translate }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ 'jobs.duration' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                  @for (step of batchService.executionDetails()!.steps; track step.stepName) {
+                    <tr>
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ step.stepName }}</td>
+                      <td class="px-4 py-3">
+                        <span [class]="getStatusClass(step.status)" class="px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                          {{ 'jobs.' + step.status.toLowerCase() | translate }}
+                        </span>
+                      </td>
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ step.readCount }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ step.writeCount }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ step.commitCount }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ step.rollbackCount }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ getDuration(step.startTime, step.endTime) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>
