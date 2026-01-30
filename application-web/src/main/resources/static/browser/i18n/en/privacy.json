@@ -1,0 +1,50 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "Last updated",
+  "date": "January 12, 2025",
+  "introduction": {
+    "title": "Introduction",
+    "p1": "Welcome to Java Starter Kit. We respect your privacy and are committed to protecting your personal data.",
+    "p2": "This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights."
+  },
+  "collection": {
+    "title": "Information We Collect",
+    "intro": "We may collect, use, store and transfer different kinds of personal data about you:",
+    "item1": "Identity Data: username, first name, last name",
+    "item2": "Contact Data: email address",
+    "item3": "Technical Data: IP address, browser type and version, time zone setting",
+    "item4": "Usage Data: information about how you use our website and services"
+  },
+  "usage": {
+    "title": "How We Use Your Information",
+    "intro": "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:",
+    "item1": "To register you as a new user",
+    "item2": "To manage and protect our business and this website",
+    "item3": "To deliver relevant website content and advertisements to you",
+    "item4": "To use data analytics to improve our website, products/services, marketing, customer relationships and experiences"
+  },
+  "security": {
+    "title": "Data Security",
+    "content": "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorized way. We limit access to your personal data to those employees, agents, contractors and other third parties who have a business need to know."
+  },
+  "cookies": {
+    "title": "Cookies",
+    "content": "We use cookies and similar tracking technologies to track the activity on our service and store certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent."
+  },
+  "rights": {
+    "title": "Your Legal Rights",
+    "intro": "Under certain circumstances, you have rights under data protection laws in relation to your personal data:",
+    "item1": "Request access to your personal data",
+    "item2": "Request correction of your personal data",
+    "item3": "Request erasure of your personal data",
+    "item4": "Object to processing of your personal data"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "content": "If you have any questions about this Privacy Policy, please contact us:"
+  },
+  "changes": {
+    "title": "Changes to This Privacy Policy",
+    "content": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the 'Last updated' date."
+  }
+}

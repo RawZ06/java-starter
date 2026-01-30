@@ -22,6 +22,7 @@
   </properties>
 
   <modules>
+    <module>application-api</module>
     <module>application-common</module>
     <module>application-web</module>
     <module>application-batch</module>

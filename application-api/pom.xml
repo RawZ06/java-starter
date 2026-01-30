@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>fr.rawz06.starter</groupId>
+    <artifactId>application-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>application-api</artifactId>
+  <packaging>jar</packaging>
+  <name>application-api</name>
+  <description>OpenAPI specification and generated code (Java + TypeScript)</description>
+
+  <properties>
+    <openapi-generator.version>7.10.0</openapi-generator.version>
+    <jackson.version>2.15.2</jackson.version>
+    <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
+    <jakarta.validation.version>3.0.2</jakarta.validation.version>
+    <swagger.annotations.version>2.2.20</swagger.annotations.version>
+    <springdoc.version>2.3.0</springdoc.version>
+  </properties>
+
+  <dependencies>
+    <!-- Spring Web for @RestController, @RequestMapping, etc. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Jakarta Annotations -->
+    <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <version>${jakarta.annotation.version}</version>
+    </dependency>
+
+    <!-- Jakarta Validation -->
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>${jakarta.validation.version}</version>
+    </dependency>
+
+    <!-- Swagger Annotations -->
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>${swagger.annotations.version}</version>
+    </dependency>
+
+    <!-- Jackson for JSON -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- SpringDoc OpenAPI (pour la génération de la doc) -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+      <version>${springdoc.version}</version>
+    </dependency>
+
+    <!-- Hibernate Validator -->
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+
+    <!-- OpenAPI Jackson Nullable -->
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <version>0.2.6</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- OpenAPI Generator for Java (Server) -->
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator.version}</version>
+        <executions>
+          <!-- Generate Java Server Code -->
+          <execution>
+            <id>generate-java-server</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+              <generatorName>spring</generatorName>
+              <output>${project.build.directory}/generated-sources/openapi-java</output>
+              <apiPackage>fr.rawz06.starter.api.controller</apiPackage>
+              <modelPackage>fr.rawz06.starter.api.dto</modelPackage>
+              <configOptions>
+                <useSpringBoot3>true</useSpringBoot3>
+                <interfaceOnly>true</interfaceOnly>
+                <skipDefaultInterface>true</skipDefaultInterface>
+                <useTags>true</useTags>
+                <useJakartaEe>true</useJakartaEe>
+                <delegatePattern>false</delegatePattern>
+                <useOptional>false</useOptional>
+                <performBeanValidation>true</performBeanValidation>
+                <useBeanValidation>true</useBeanValidation>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                <dateLibrary>java8</dateLibrary>
+              </configOptions>
+            </configuration>
+          </execution>
+
+          <!-- Generate TypeScript Angular Client -->
+          <execution>
+            <id>generate-typescript-angular</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+              <generatorName>typescript-angular</generatorName>
+              <output>${project.build.directory}/generated-sources/openapi-typescript</output>
+              <configOptions>
+                <ngVersion>20.0.0</ngVersion>
+                <npmName>@rawz06/starter-api-client</npmName>
+                <npmVersion>1.0.0</npmVersion>
+                <snapshot>false</snapshot>
+                <stringEnums>true</stringEnums>
+                <withInterfaces>true</withInterfaces>
+                <providedInRoot>true</providedInRoot>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Add generated sources to compilation -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/openapi-java/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy TypeScript generated code to Angular project -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution>
+            <id>copy-typescript-to-angular</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.parent.basedir}/application-angular/src/app/generated-api</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/generated-sources/openapi-typescript</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

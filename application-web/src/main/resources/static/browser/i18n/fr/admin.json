@@ -1,0 +1,10 @@
+{
+  "adminPanel": "Panneau Admin",
+  "dashboard": "Tableau de bord",
+  "users": "Utilisateurs",
+  "jobs": "Jobs Batch",
+  "settings": "Paramètres",
+  "backToSite": "Retour au site",
+  "profile": "Profil",
+  "logout": "Déconnexion"
+}

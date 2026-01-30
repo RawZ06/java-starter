@@ -1,0 +1,55 @@
+{
+  "title": "Conditions d'utilisation",
+  "lastUpdated": "Dernière mise à jour",
+  "date": "12 janvier 2025",
+  "introduction": {
+    "title": "Introduction",
+    "p1": "Bienvenue sur Java Starter Kit. Ces conditions d'utilisation régissent votre utilisation de notre site Web et de nos services.",
+    "p2": "Veuillez lire attentivement ces conditions avant d'utiliser notre service."
+  },
+  "acceptance": {
+    "title": "Acceptation des conditions",
+    "content": "En accédant et en utilisant ce service, vous acceptez et acceptez d'être lié par les termes et dispositions de cet accord. Si vous n'acceptez pas de respecter ce qui précède, veuillez ne pas utiliser ce service."
+  },
+  "accounts": {
+    "title": "Comptes utilisateur",
+    "intro": "Lorsque vous créez un compte chez nous, vous devez fournir des informations exactes, complètes et à jour en tout temps. Vous êtes responsable de :",
+    "item1": "Maintenir la confidentialité de votre compte et de votre mot de passe",
+    "item2": "Restreindre l'accès à votre ordinateur et à votre compte",
+    "item3": "Toutes les activités qui se produisent sous votre compte",
+    "item4": "Nous informer immédiatement de toute utilisation non autorisée de votre compte"
+  },
+  "conduct": {
+    "title": "Conduite de l'utilisateur",
+    "intro": "Vous acceptez de ne pas utiliser le service pour :",
+    "item1": "Violer toute loi ou réglementation applicable",
+    "item2": "Porter atteinte aux droits d'autrui",
+    "item3": "Transmettre tout code nuisible ou malveillant",
+    "item4": "Interférer avec ou perturber le service ou les serveurs",
+    "item5": "Tenter d'obtenir un accès non autorisé à toute partie du service"
+  },
+  "intellectual": {
+    "title": "Propriété intellectuelle",
+    "content": "Le service et son contenu, ses fonctionnalités et ses fonctionnalités d'origine sont et resteront la propriété exclusive de Java Starter Kit et de ses concédants de licence. Le service est protégé par le droit d'auteur, les marques de commerce et d'autres lois."
+  },
+  "termination": {
+    "title": "Résiliation",
+    "content": "Nous pouvons résilier ou suspendre votre compte immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris, sans s'y limiter, si vous enfreignez les conditions. Dès la résiliation, votre droit d'utiliser le service cessera immédiatement."
+  },
+  "disclaimer": {
+    "title": "Clause de non-responsabilité",
+    "content": "LE SERVICE EST FOURNI 'TEL QUEL' ET 'TEL QUE DISPONIBLE' SANS GARANTIES D'AUCUNE SORTE, EXPRESSES OU IMPLICITES. NOUS NE GARANTISSONS PAS QUE LE SERVICE SERA ININTERROMPU, SÉCURISÉ OU SANS ERREUR."
+  },
+  "liability": {
+    "title": "Limitation de responsabilité",
+    "content": "En aucun cas Java Starter Kit, ni ses directeurs, employés, partenaires, agents, fournisseurs ou affiliés, ne seront responsables de tout dommage indirect, accessoire, spécial, consécutif ou punitif, y compris, sans s'y limiter, la perte de profits, de données, d'utilisation, de bonne volonté ou d'autres pertes intangibles."
+  },
+  "law": {
+    "title": "Loi applicable",
+    "content": "Ces conditions seront régies et interprétées conformément aux lois de votre juridiction, sans égard à ses dispositions en matière de conflit de lois."
+  },
+  "contact": {
+    "title": "Nous contacter",
+    "content": "Si vous avez des questions concernant ces conditions, veuillez nous contacter :"
+  }
+}

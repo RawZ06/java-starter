@@ -1,30 +1,35 @@
 package fr.rawz06.starter.web.auth;
 
+import fr.rawz06.starter.api.controller.AuthApi;
+import fr.rawz06.starter.api.dto.LoginRequestDto;
+import fr.rawz06.starter.api.dto.LoginResponseDto;
+import fr.rawz06.starter.api.dto.UserDto;
 import fr.rawz06.starter.common.entity.User;
 import fr.rawz06.starter.common.service.UserService;
+import fr.rawz06.starter.web.mapper.UserMapper;
 import fr.rawz06.starter.web.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Map;
-
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthApi {
 
     private final JwtService jwtService;
     private final UserService userService;
+    private final UserMapper userMapper;
 
-    @PostMapping("/public/auth/login")
-    public Map<String, String> login(@RequestBody Map<String, String> payload) {
-        String username = payload.getOrDefault("username", "");
-        String password = payload.getOrDefault("password", "");
+    @Override
+    public ResponseEntity<LoginResponseDto> login(LoginRequestDto loginRequestDto) {
+        String username = loginRequestDto.getUsername();
+        String password = loginRequestDto.getPassword();
 
-        if (username.isBlank() || password.isBlank()) {
+        if (username == null || username.isBlank() || password == null || password.isBlank()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Bad credentials");
         }
 
@@ -36,11 +41,16 @@ public class AuthController {
         var user = userService.findByLogin(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Bad credentials"));
 
-        return Map.of("token", jwtService.generateToken(username, user.getRole()));
+        LoginResponseDto response = new LoginResponseDto();
+        response.setToken(jwtService.generateToken(username, user.getRole()));
+
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/auth/me")
-    public User getCurrentUser(Authentication authentication) {
+    @Override
+    public ResponseEntity<UserDto> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (authentication == null || authentication.getName() == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authenticated");
         }
@@ -48,8 +58,6 @@ public class AuthController {
         User user = userService.findByLogin(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        // Remove password from response
-        user.setPassword(null);
-        return user;
+        return ResponseEntity.ok(userMapper.toUserDto(user));
     }
 }

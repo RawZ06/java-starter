@@ -1,5 +1,8 @@
 package fr.rawz06.starter.web.controller.admin;
 
+import fr.rawz06.starter.api.controller.BatchApi;
+import fr.rawz06.starter.api.dto.*;
+import fr.rawz06.starter.web.mapper.BatchMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -7,118 +10,82 @@ import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/admin/batch")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
-public class BatchJobController {
+public class BatchJobController implements BatchApi {
 
     private final JobExplorer jobExplorer;
+    private final BatchMapper batchMapper;
 
-    @GetMapping("/jobs")
-    public ResponseEntity<List<Map<String, Object>>> getAllJobs() {
+    @Override
+    public ResponseEntity<List<BatchJobDto>> getAllBatchJobs() {
         List<String> jobNames = jobExplorer.getJobNames();
 
-        List<Map<String, Object>> jobs = jobNames.stream().map(jobName -> {
+        List<BatchJobDto> jobs = jobNames.stream().map(jobName -> {
             List<JobInstance> jobInstances = jobExplorer.getJobInstances(jobName, 0, 1);
-            Long jobInstanceCount = null;
+            Long jobInstanceCount;
             try {
                 jobInstanceCount = jobExplorer.getJobInstanceCount(jobName);
             } catch (NoSuchJobException e) {
                 throw new RuntimeException(e);
             }
 
-            Map<String, Object> jobInfo = new HashMap<>();
-            jobInfo.put("name", jobName);
-            jobInfo.put("instanceCount", jobInstanceCount);
+            BatchJobDto jobDto = new BatchJobDto();
+            jobDto.setName(jobName);
+            jobDto.setInstanceCount(jobInstanceCount);
 
             if (!jobInstances.isEmpty()) {
                 JobInstance lastInstance = jobInstances.get(0);
                 List<JobExecution> executions = jobExplorer.getJobExecutions(lastInstance);
                 if (!executions.isEmpty()) {
                     JobExecution lastExecution = executions.get(0);
-                    jobInfo.put("lastExecutionStatus", lastExecution.getStatus().toString());
-                    jobInfo.put("lastExecutionTime", lastExecution.getStartTime());
-                    jobInfo.put("lastExecutionEndTime", lastExecution.getEndTime());
+                    jobDto.setLastExecutionStatus(lastExecution.getStatus().toString());
+                    if (lastExecution.getStartTime() != null) {
+                        jobDto.setLastExecutionTime(lastExecution.getStartTime().atOffset(ZoneOffset.UTC));
+                    }
+                    if (lastExecution.getEndTime() != null) {
+                        jobDto.setLastExecutionEndTime(lastExecution.getEndTime().atOffset(ZoneOffset.UTC));
+                    }
                 }
             }
 
-            return jobInfo;
+            return jobDto;
         }).collect(Collectors.toList());
 
         return ResponseEntity.ok(jobs);
     }
 
-    @GetMapping("/jobs/{jobName}/executions")
-    public ResponseEntity<List<Map<String, Object>>> getJobExecutions(
-            @PathVariable String jobName,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    @Override
+    public ResponseEntity<List<JobExecutionDto>> getJobExecutions(String jobName, Integer page, Integer size) {
+        int pageNum = page != null ? page : 0;
+        int pageSize = size != null ? size : 10;
 
-        List<JobInstance> jobInstances = jobExplorer.getJobInstances(jobName, page * size, size);
+        List<JobInstance> jobInstances = jobExplorer.getJobInstances(jobName, pageNum * pageSize, pageSize);
 
-        List<Map<String, Object>> executions = jobInstances.stream().flatMap(instance ->
-            jobExplorer.getJobExecutions(instance).stream().map(execution -> {
-                Map<String, Object> executionInfo = new HashMap<>();
-                executionInfo.put("id", execution.getId());
-                executionInfo.put("instanceId", instance.getInstanceId());
-                executionInfo.put("jobName", jobName);
-                executionInfo.put("status", execution.getStatus().toString());
-                executionInfo.put("startTime", execution.getStartTime());
-                executionInfo.put("endTime", execution.getEndTime());
-                executionInfo.put("exitCode", execution.getExitStatus().getExitCode());
-                executionInfo.put("exitDescription", execution.getExitStatus().getExitDescription());
-                return executionInfo;
-            })
-        ).collect(Collectors.toList());
+        List<JobExecutionDto> executions = jobInstances.stream()
+                .flatMap(instance -> jobExplorer.getJobExecutions(instance).stream()
+                        .map(execution -> batchMapper.toJobExecutionDto(execution, jobName)))
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(executions);
     }
 
-    @GetMapping("/jobs/{jobName}/executions/{executionId}")
-    public ResponseEntity<Map<String, Object>> getJobExecutionDetails(
-            @PathVariable String jobName,
-            @PathVariable Long executionId) {
-
+    @Override
+    public ResponseEntity<JobExecutionDetailsDto> getJobExecutionDetails(String jobName, Long executionId) {
         JobExecution execution = jobExplorer.getJobExecution(executionId);
 
         if (execution == null) {
             return ResponseEntity.notFound().build();
         }
 
-        Map<String, Object> details = new HashMap<>();
-        details.put("id", execution.getId());
-        details.put("jobName", jobName);
-        details.put("status", execution.getStatus().toString());
-        details.put("startTime", execution.getStartTime());
-        details.put("endTime", execution.getEndTime());
-        details.put("exitCode", execution.getExitStatus().getExitCode());
-        details.put("exitDescription", execution.getExitStatus().getExitDescription());
-        details.put("createTime", execution.getCreateTime());
-        details.put("lastUpdated", execution.getLastUpdated());
-
-        // Step executions
-        List<Map<String, Object>> steps = execution.getStepExecutions().stream().map(step -> {
-            Map<String, Object> stepInfo = new HashMap<>();
-            stepInfo.put("stepName", step.getStepName());
-            stepInfo.put("status", step.getStatus().toString());
-            stepInfo.put("readCount", step.getReadCount());
-            stepInfo.put("writeCount", step.getWriteCount());
-            stepInfo.put("commitCount", step.getCommitCount());
-            stepInfo.put("rollbackCount", step.getRollbackCount());
-            stepInfo.put("startTime", step.getStartTime());
-            stepInfo.put("endTime", step.getEndTime());
-            return stepInfo;
-        }).collect(Collectors.toList());
-
-        details.put("steps", steps);
+        JobExecutionDetailsDto details = batchMapper.toJobExecutionDetailsDto(execution, jobName);
 
         return ResponseEntity.ok(details);
     }

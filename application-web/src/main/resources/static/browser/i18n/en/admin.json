@@ -1,0 +1,10 @@
+{
+  "adminPanel": "Admin Panel",
+  "dashboard": "Dashboard",
+  "users": "Users",
+  "jobs": "Batch Jobs",
+  "settings": "Settings",
+  "backToSite": "Back to site",
+  "profile": "Profile",
+  "logout": "Logout"
+}

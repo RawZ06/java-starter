@@ -18,3 +18,9 @@ logging:
 # Database seeding configuration (deprecated - use batch job instead)
 seeding:
   enabled: false
+
+# Swagger UI en mode dev : accès complet sans authentification
+springdoc:
+  swagger-ui:
+    try-it-out-enabled: true
+    # Permet de tester tous les endpoints même protégés

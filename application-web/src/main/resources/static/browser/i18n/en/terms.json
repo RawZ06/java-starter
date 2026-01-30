@@ -1,0 +1,55 @@
+{
+  "title": "Terms of Service",
+  "lastUpdated": "Last updated",
+  "date": "January 12, 2025",
+  "introduction": {
+    "title": "Introduction",
+    "p1": "Welcome to Java Starter Kit. These Terms of Service govern your use of our website and services.",
+    "p2": "Please read these terms carefully before using our service."
+  },
+  "acceptance": {
+    "title": "Acceptance of Terms",
+    "content": "By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service."
+  },
+  "accounts": {
+    "title": "User Accounts",
+    "intro": "When you create an account with us, you must provide information that is accurate, complete, and current at all times. You are responsible for:",
+    "item1": "Maintaining the confidentiality of your account and password",
+    "item2": "Restricting access to your computer and account",
+    "item3": "All activities that occur under your account",
+    "item4": "Notifying us immediately of any unauthorized use of your account"
+  },
+  "conduct": {
+    "title": "User Conduct",
+    "intro": "You agree not to use the service to:",
+    "item1": "Violate any applicable laws or regulations",
+    "item2": "Infringe upon the rights of others",
+    "item3": "Transmit any harmful or malicious code",
+    "item4": "Interfere with or disrupt the service or servers",
+    "item5": "Attempt to gain unauthorized access to any part of the service"
+  },
+  "intellectual": {
+    "title": "Intellectual Property",
+    "content": "The service and its original content, features, and functionality are and will remain the exclusive property of Java Starter Kit and its licensors. The service is protected by copyright, trademark, and other laws."
+  },
+  "termination": {
+    "title": "Termination",
+    "content": "We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use the service will immediately cease."
+  },
+  "disclaimer": {
+    "title": "Disclaimer",
+    "content": "THE SERVICE IS PROVIDED 'AS IS' AND 'AS AVAILABLE' WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE."
+  },
+  "liability": {
+    "title": "Limitation of Liability",
+    "content": "In no event shall Java Starter Kit, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses."
+  },
+  "law": {
+    "title": "Governing Law",
+    "content": "These Terms shall be governed and construed in accordance with the laws of your jurisdiction, without regard to its conflict of law provisions."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "content": "If you have any questions about these Terms, please contact us:"
+  }
+}

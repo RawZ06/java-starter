@@ -1,26 +1,25 @@
 package fr.rawz06.starter.web.controller.admin;
 
+import fr.rawz06.starter.api.controller.AdminDashboardApi;
+import fr.rawz06.starter.api.dto.*;
 import fr.rawz06.starter.common.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin")
 @RequiredArgsConstructor
-public class AdminDashboardController {
+public class AdminDashboardController implements AdminDashboardApi {
 
     private final UserService userService;
 
-    @GetMapping("/dashboard")
-    public Map<String, Object> getDashboard(Authentication authentication) {
+    @Override
+    public ResponseEntity<DashboardDto> getAdminDashboard() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null ? authentication.getName() : "anonymous";
 
         // Calculate real statistics
@@ -39,27 +38,30 @@ public class AdminDashboardController {
                 .filter(user -> user.getCreatedAt() != null && user.getCreatedAt().isAfter(thirtyDaysAgo))
                 .count();
 
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("totalUsers", totalUsers);
-        stats.put("activeUsers", activeUsers);
-        stats.put("adminUsers", adminUsers);
-        stats.put("recentUsers", recentUsers);
+        DashboardStatsDto stats = new DashboardStatsDto();
+        stats.setTotalUsers(totalUsers);
+        stats.setActiveUsers(activeUsers);
+        stats.setAdminUsers(adminUsers);
+        stats.setRecentUsers(recentUsers);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Welcome to admin dashboard");
-        response.put("user", username);
-        response.put("stats", stats);
+        DashboardDto dashboard = new DashboardDto();
+        dashboard.setMessage("Welcome to admin dashboard");
+        dashboard.setUser(username);
+        dashboard.setStats(stats);
 
-        return response;
+        return ResponseEntity.ok(dashboard);
     }
 
-    @GetMapping("/profile")
-    public Map<String, String> getProfile(Authentication authentication) {
+    @Override
+    public ResponseEntity<AdminProfileDto> getAdminProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String user = authentication != null ? authentication.getName() : "anonymous";
-        return Map.of(
-                "username", user,
-                "email", user + "@example.com",
-                "role", "ADMIN"
-        );
+
+        AdminProfileDto profile = new AdminProfileDto();
+        profile.setUsername(user);
+        profile.setEmail(user + "@example.com");
+        profile.setRole("ADMIN");
+
+        return ResponseEntity.ok(profile);
     }
 }

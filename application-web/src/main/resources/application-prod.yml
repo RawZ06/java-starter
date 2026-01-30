@@ -18,3 +18,9 @@ logging:
 # Database seeding configuration (truncate + seed)
 seeding:
   enabled: false
+
+# Swagger UI en mode prod : lecture seule uniquement (pas d'exécution)
+springdoc:
+  swagger-ui:
+    try-it-out-enabled: false
+    # Désactive les boutons "Try it out" - documentation en lecture seule

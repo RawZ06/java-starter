@@ -14,3 +14,12 @@ spring:
 
 server:
   port: 8080
+
+# SpringDoc / Swagger configuration
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    # Try-it-out will be enabled/disabled based on profile
+    try-it-out-enabled: true
