@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UserSeeder implements Seeder<User> {
+public class UserSeeder implements Seeder {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

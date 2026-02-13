@@ -2,9 +2,8 @@ package fr.rawz06.starter.common.seeder;
 
 /**
  * Interface for seeding entities in the database
- * @param <T> The entity type to seed
  */
-public interface Seeder<T> {
+public interface Seeder {
 
     /**
      * Perform the seeding operation

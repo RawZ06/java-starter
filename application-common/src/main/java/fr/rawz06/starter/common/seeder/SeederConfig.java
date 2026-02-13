@@ -22,11 +22,11 @@ public class SeederConfig {
 
     @Bean
     @ConditionalOnProperty(name = "seeding.enabled", havingValue = "true")
-    public CommandLineRunner runSeeders(List<Seeder<?>> seeders) {
+    public CommandLineRunner runSeeders(List<Seeder> seeders) {
         return args -> {
             log.info("🌱 Starting database seeding...");
 
-            List<Seeder<?>> sortedSeeders = seeders.stream()
+            List<Seeder> sortedSeeders = seeders.stream()
                     .sorted(Comparator.comparingInt(Seeder::getOrder))
                     .toList();
 
