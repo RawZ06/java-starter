@@ -32,7 +32,7 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
 
 # ===== FRONT (ANGULAR served by Spring Boot/Tomcat) =====
 FROM eclipse-temurin:21-jre-alpine AS front
@@ -47,7 +47,7 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost || exit 1
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
 
 # ===== BATCH =====
 FROM eclipse-temurin:21-jre-alpine AS batch
@@ -59,4 +59,4 @@ COPY --from=build-backend /app/application-batch/target/*.jar app.jar
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD pgrep -f "java.*app.jar" || exit 1
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
